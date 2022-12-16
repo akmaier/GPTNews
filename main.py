@@ -191,9 +191,9 @@ def parse_entry(entry):
             print("Link: ", entry["link"])
             print("Old News: ", news_text)
             new_news = htmlify(
-                rewrite_text("Now write a news artice about the previous text while keeping the same length"
+                rewrite_text("Please summarize the following news article in a medieval english, shakespeare style poem"
                                     " and remove all " +
-                                    "occurances of CNN.", news_text))
+                                    "occurences of CNN.", news_text))
             print("New News: ", new_news)
             publish_post(new_title, new_news, entry["link"])
 
