@@ -11,6 +11,7 @@ import medium
 import urllib
 
 from openai import InvalidRequestError
+from openai.error import ServiceUnavailableError
 
 # Set the OpenAI API key
 openai.api_key = "[YOUR OPEN AI API KEY]"
@@ -233,6 +234,9 @@ while True:
         if entry not in parsed_entries:
             try:
                 parse_entry(entry)
+            except ServiceUnavailableError:
+                print ("Sever Overload at OpenAI. Waiting 60 sec.")
+                time.sleep(60)
             except InvalidRequestError:
                 print("Post omitted due to OpenAI API restritions")
             parsed_entries.append(entry)
