@@ -112,7 +112,7 @@ def rewrite_text(command, text):
     if (len(query) > 4000):
         query = pick_first_4000_chars(query)
     response = openai.Completion.create(
-        engine="text-davinci-002",
+        engine="text-davinci-003",
         prompt=query,
         temperature=0.5,
         max_tokens=1024,
@@ -184,16 +184,24 @@ def parse_entry(entry):
         if news_text:
             print("Title Old: ", title)
             new_title = remove_blank_lines(
-                rewrite_text(". Now write a news headline similar to the previous one. "
+                rewrite_text(". Write a headline similar to the previous one. "
                                      " Keep the same lenght!"
                                      , title))
             print("Title New: ", new_title)
             print("Link: ", entry["link"])
             print("Old News: ", news_text)
+
             new_news = htmlify(
-                rewrite_text("Please summarize the following news article in a medieval english, shakespeare style poem"
-                                    " and remove all " +
-                                    "occurences of CNN.", news_text))
+                rewrite_text(" Please convert the text into a squib in emotionally engaging language."
+                                    " Make sure that the text is at least 4.000 characters long"
+                             " and has more than four paragraphs. " +
+                                    " Never ever copy parts of the text! ", news_text))
+            while len(new_news) < 1000:
+                new_news = htmlify(
+                    rewrite_text(" Please convert the text into a squib in emotionally engaging language."
+                                 " Make sure that the text is at least 4.000 characters long"
+                                 " and has more than four paragraphs. " +
+                                 " Never ever copy parts of the text! ", news_text))
             print("New News: ", new_news)
             publish_post(new_title, new_news, entry["link"])
 
